@@ -1,0 +1,80 @@
+/* 
+
+Copyright (C) Markus Olsson 2004
+
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 
+License. To view a copy of this license, visit 
+http://creativecommons.org/licenses/by-nc-sa/2.0/ or send a letter to 
+
+Creative Commons, 
+559 Nathan Abbott Way, 
+Stanford, California 94305, 
+USA.
+
+*/
+
+.header {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: x-small;
+    width: 100%
+}
+
+.footer {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: x-small;
+    text-align: right;
+}
+
+.niceTable {
+    width: 100%;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: x-small;
+    padding: 0;
+    margin: 0;
+}
+
+/*
+ * Table headers
+*/
+
+
+.niceTable tr th {
+    background-color: #003366;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: left;
+    padding: 0.5em;
+    margin: 0;
+}
+
+.niceTable th:first-child {
+    border-left: 0;
+}
+
+.niceTable tr th:hover {
+    background-color: #2d5e92;
+}
+
+/* Table cells: general */
+
+.niceTable td:first-child {
+    border-left: 0;
+}
+
+.niceTable tr td {
+    padding: 0.2em;
+    border-left: 1px solid #cccccc;
+    margin: 0;
+}
+
+/* Optional alternating colours */
+
+.niceTableEven td {
+    background-color: #fff;
+}
+
+.niceTableOdd td {
+    background-color: #eeeeee;
+}
+
+

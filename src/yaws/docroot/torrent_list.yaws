@@ -1,0 +1,44 @@
+<erl>
+
+-include("bittorrent.hrl").
+
+torrent_stats(Hash, Pid) ->
+    % TODO: error
+    {ok, SR} = torrent_handler:scrape(Pid),
+    {tr, [], [
+        {td, [], 
+            {a,
+                [{href, "torrent.yaws?info_hash=" ++
+                    yaws_api:url_encode(binary_to_list(Hash))}],
+                utils:hex_string(Hash)
+            }
+        },
+        {td, [], integer_to_list(SR#scrape_rsp.downloaded)},
+        {td, [], integer_to_list(SR#scrape_rsp.complete)},
+        {td, [], integer_to_list(SR#scrape_rsp.incomplete)}
+    ]}.
+
+torrent_list() ->
+    {ok, Torrents} = torrent_manager:get_handlers(),
+    {table,
+        [{class, "niceTable"}],
+        [
+            {tr, [], [
+                {th, [], "info_hash"},
+                {th, [], "downloaded"},
+                {th, [], "complete"},
+                {th, [], "incomplete"}
+                ]
+            }
+        ]
+        ++
+        [torrent_stats(Hash, Pid) || {Hash, Pid} <- Torrents]
+    }.
+
+out(A) ->
+    layout:page(
+        torrent_list(),
+        "Torrent list"
+    ).
+
+</erl>

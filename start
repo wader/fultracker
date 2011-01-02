@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cd src
+
+erl \
+    -pa ../ebin \
+    -pa /home/mattias/src/yaws/ebin \
+    -eval '
+    application:set_env(yaws, conf, "yaws/yaws.conf"),
+    application:start(tracker),
+    application:start(yaws).
+    '
+

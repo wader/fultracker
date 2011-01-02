@@ -1,0 +1,74 @@
+
+utils:peer_*, move to peers:..
+
+
+http://www.bittorrent.org/protocol.html
+
+.torrent application/x-bittorrent
+
+make failure  on too fast client rerequesting....
+
+
+start insted of start_link.. or trap exit i managers?
+
+tell manager about noproc errors?
+trao_exit.. need lookup into_hash from pid
+
+"nodes" in .torrent
+                     {"nodes",
+                      {list,[{list,["218.30.13.145",16881]},
+                             {list,["137.141.232.228",19322]},
+                             {list,["140.137.61.78",14196]},
+                             {list,["222.182.42.129",20367]},
+                             {list,["81.191.15.65",13031]},
+                             {list,["218.80.200.6",13173]},
+                             {list,["60.48.85.133",18033]},
+                             {list,["220.178.106.163",1765]},
+                             {list,["202.173.101.218",9316]},
+                             {list,["85.136.65.184",9359]}]}}
+
+
+nicer url:s..
+
+
+upload torrent support... add parcing of torrent.. etc etc..
+rewrite tracker url... how to get own?
+
+Makefile depends.. hrl
+
+output raw values use "javascipt" transforms..
+javascript table sort.. sum.. per column..
+
+benchmark... sim handsnake part too?
+
+torrent_mananger crash?... not sure..
+
+natcheck, recheck oldip != newip.. insted on started event..
+catches ip changes...
+
+yaws:
+=ERROR REPORT==== 20-Mar-2006::23:15:46 ===
+Failed to wraplog "./auth.log":{{badmatch,{error,enoent}},
+                                [{yaws_log,wrap_p,2},
+                                 {yaws_log,wrap,2},
+                                 {yaws_log,handle_info,2},
+                                 {gen_server,handle_msg,6},
+                                 {proc_lib,init_p,5}]}
+
+
+
+
+no_peer_id, not really needed since everyone uses compact?
+
+
+handler stop... signaling to manager?
+handle noproc in http handler?
+
+
+foldl, foldr.. foldmap?
+
+DONE tagged return... peers..
+
+send terminate to manager, delay terminate
+
+

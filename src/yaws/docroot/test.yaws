@@ -1,0 +1,34 @@
+<erl>
+
+-include("../peers.hrl").
+    
+peer_list() ->
+    {table,
+        [],
+        [
+            {tr, [], [
+                {td, [], 
+                    {a,
+                        [{href, "asdasd"}],
+                        utils:hex_string(P#peer.id)
+                    },
+                {td, [], P#peer.id},
+                {td, [], P#peer.id},
+                }],
+        || P <- torrent_manager:get_handlers()]
+    }
+
+out(A) ->
+
+    
+    {ehtml,
+        {html,
+            [],
+            {body,
+                [],
+                torrent_list()
+            }
+        }
+    }.
+
+</erl>

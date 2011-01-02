@@ -1,0 +1,43 @@
+<erl>
+
+% replace or insert if not exists
+bencode_dict_enter(BenDict, Key, Value) ->
+    {dict, List} = BenDict,
+    NewTuple = {Key, Value},
+    NewList = 
+        case lists:keymember(Key, 1, List) of
+        true -> lists:keyreplace(Key, 1, List, NewTuple);
+        false -> [NewTuple|List]
+        end,
+    {dict, NewList}.
+    
+
+out(A) ->
+       case yaws_api:parse_multipart_post(A) of
+            {cont, Cont, Res} ->
+                   St = handle_res(A, Res),
+                   {get_more, Cont, St};
+            {result, Res} ->
+                   handle_res(A, Res),
+                    % TODO: name="foo"...
+                   {value, {body, Body}} = lists:keysearch(body, 1, Res),
+                   {ok, BenTorrent} = bencode:decode(Body),
+                   NewBenTorrent = bencode_dict_enter(BenTorrent, "announce", "asdsad"),
+                   {ok, Data} = bencode:encode(NewBenTorrent, [flatten, sort]),
+                   file:write_file("/tmp/bla.torrent", Data),
+                   {html, f("<pre>Done</pre>", [])}
+       end.
+
+handle_res(A, [{head, Name}|T]) ->
+     io:format("head:~p~n",[Name]),
+     handle_res(A, T);
+handle_res(A, [{part_body, Data}|T]) ->
+     io:format("part_body:~p~n",[length(Data)]),
+     handle_res(A, T);
+handle_res(A, [{body, Data}|T]) ->
+     io:format("body:~p~n",[length(Data)]),
+     handle_res(A, T);
+handle_res(A, []) ->
+     io:format("End_res~n").
+
+</erl>

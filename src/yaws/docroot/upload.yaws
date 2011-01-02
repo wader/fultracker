@@ -1,0 +1,25 @@
+<erl>
+
+out(A) ->
+    layout:page(
+        [
+        {form, [
+            {action, "test2.yaws"},
+            {method, "post"},
+            {enctype, "multipart/form-data"}], [
+                {input, [
+                    {type, "file"},
+                    {name, "foo"}]},
+                {input, [
+                    {type, "submit"},
+                    {value, "Upload"}]}
+            ]},
+        {'div', [],
+            ["Torrent announce URL will automatically be corrected to ",
+            "http://blablal/announce"]
+            }
+        ],
+        "Upload"
+        ).
+
+</erl>

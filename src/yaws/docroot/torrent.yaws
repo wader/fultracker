@@ -1,0 +1,81 @@
+<erl>
+
+% TODO: natcheck
+
+-include("peers.hrl").
+
+speed(Bytes1, Bytes2, Time1, Time2)
+    when
+        Bytes1 == undefined; Time1 == undefined;
+        Bytes1 >= Bytes2; Time1 >= Time2 ->
+    undefined;
+speed(Bytes1, Bytes2, Time1, Time2) ->
+    (Bytes2 - Bytes1) div (Time2 - Time1).
+
+speed_string(undefined) -> "";
+speed_string(Speed) ->
+    [$ , $(, utils:fuzzy_size(Speed), $/, $s, $)].
+
+peer_list(Pid) ->
+    {ok, Peers} = torrent_handler:get_peers(Pid),
+    Now = utils:nowsec(),
+    
+
+    {table,
+        [{class, "niceTable"}],
+        [
+            {tr, [], [
+                {th, [], "peer_id"},
+                {th, [], "client"},
+                {th, [], "ip"},
+                {th, [], "port"},
+                {th, [], "left"},
+                {th, [], "downloaded"},
+                {th, [], "uploaded"},
+                {th, [], "last_seen"}
+            ]}
+        ]
+        ++
+        [
+            {tr, [], [
+                {td, [], utils:hex_string(P#peer.id)},
+                {td, [], utils:peer_id_to_client(P#peer.id)},
+                {td, [], utils:peer_ip_to_string(P#peer.ip)},
+                {td, [], utils:peer_port_to_string(P#peer.port)},
+                {td, [], utils:fuzzy_size(P#peer.left)},
+                {td, [],
+                    utils:fuzzy_size(P#peer.downloaded) ++
+                    speed_string(
+                        speed(P#peer.downloaded_prev, P#peer.downloaded,
+                        P#peer.last_seen_prev, P#peer.last_seen))
+                },
+                {td, [],
+                    utils:fuzzy_size(P#peer.uploaded) ++
+                    speed_string(
+                        speed(P#peer.uploaded_prev, P#peer.uploaded,
+                        P#peer.last_seen_prev, P#peer.last_seen))
+                },
+                {td, [], utils:fuzzy_ago(Now - P#peer.last_seen)}
+            ]}
+        || P <- Peers]
+    }.
+
+out(A) ->
+    layout:page(
+        case lists:keysearch(
+            "info_hash", 1, yaws_api:parse_query(A)) of
+        {value, {"info_hash", Hash}} ->
+            case torrent_manager:get_handler(
+                list_to_binary(Hash), false) of
+            {ok, Pid} ->
+                peer_list(Pid);
+            {error, Reason} ->
+                Reason
+            end;
+        false ->
+            "no info_hash parameter"
+        end,
+        "Torrent details"
+    ).
+
+</erl>
